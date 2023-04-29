@@ -59,6 +59,13 @@ app.use((err, req, res, next) => {
 
 // Set up localhost
 // const port = 3000 || 8080;
-app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+// app.listen(port, () => {
+//   console.log(`App listening at http://localhost:${port}`);
+// });
+app.listen(process.env.PORT || 3000, function () {
+  console.log(
+    "Express server listening on port %d in %s mode",
+    this.address().port,
+    app.settings.env
+  );
 });
