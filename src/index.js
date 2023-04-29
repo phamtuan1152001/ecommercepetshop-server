@@ -4,6 +4,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const route = require("./routes");
 const db = require("./config/db");
+let port = process.env.PORT || 3000;
 // const bodyParser = require("body-parser");
 
 // app.use(bodyParser.json());
@@ -57,7 +58,7 @@ app.use((err, req, res, next) => {
 });
 
 // Set up localhost
-const port = 3000 || 8080;
+// const port = 3000 || 8080;
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
