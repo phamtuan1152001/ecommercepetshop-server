@@ -16,7 +16,7 @@ router.post(
 // post list producst with pagination
 router.post(
   "/listProducts",
-  // [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken, authJwt.isAdmin],
   ProductsController.getListWithPaginate
 );
 
