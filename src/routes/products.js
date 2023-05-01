@@ -23,7 +23,7 @@ router.post(
 // get detail products
 router.get(
   "/detail/:id",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  // [authJwt.verifyToken, authJwt.isAdmin],
   ProductsController.getDetail
 );
 
