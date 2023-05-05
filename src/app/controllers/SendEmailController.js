@@ -7,6 +7,8 @@ const APP_PASSWORD_HARD_CODE = "oelntfgcqbaypmrg"; // SET-UP FOR petshopecommerc
 
 class SendEmailController {
   sendEmail(req, res) {
+    // res.json(req.body);
+    const { orderId, userEmail, userName } = req.body;
     var transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 465,
@@ -18,10 +20,10 @@ class SendEmailController {
     });
     // to: "plstuan.ityu@gmail.com, phamtuan1152001@gmail.com",
     var mailOptions = {
-      from: "songtuan20012@gmail.com",
-      to: "phamtuan1152001@gmail.com",
-      subject: "Sending Email using Node.js",
-      text: "That was easy - pham le song tuan - hihi! - 1105",
+      from: userEmail,
+      to: "petshopecommerce301@gmail.com",
+      subject: "Confirm payment in PetShop",
+      text: `Customer ${userName} has already pay his/her order. Please admin in PetShop check the bank account to confirm that his/her order has already pay successfully. Order ID ${orderId}`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
