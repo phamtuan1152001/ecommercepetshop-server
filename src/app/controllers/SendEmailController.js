@@ -1,7 +1,9 @@
 var nodemailer = require("nodemailer");
 
-const USER_NAME_GMAIL = "songtuan20012@gmail.com";
-const APP_PASSWORD_HARD_CODE = "fwtahtrfwytyyymy"; // SET-UP FOR songtuan20012@gmail.com
+const USER_NAME_GMAIL = "petshopecommerce301@gmail.com";
+// petshopecommerce301@gmail.com
+// 22052023
+const APP_PASSWORD_HARD_CODE = "oelntfgcqbaypmrg"; // SET-UP FOR petshopecommerce301@gmail.com
 
 class SendEmailController {
   sendEmail(req, res) {
@@ -14,12 +16,12 @@ class SendEmailController {
         pass: APP_PASSWORD_HARD_CODE,
       },
     });
-
+    // to: "plstuan.ityu@gmail.com, phamtuan1152001@gmail.com",
     var mailOptions = {
       from: "songtuan20012@gmail.com",
-      to: "plstuan.ityu@gmail.com, phamtuan1152001@gmail.com",
+      to: "phamtuan1152001@gmail.com",
       subject: "Sending Email using Node.js",
-      text: "That was easy - pham le song tuan - hihi!",
+      text: "That was easy - pham le song tuan - hihi! - 1105",
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
