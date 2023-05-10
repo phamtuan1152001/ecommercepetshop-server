@@ -23,7 +23,8 @@ class SendEmailController {
       from: userEmail,
       to: "petshopecommerce301@gmail.com",
       subject: "Confirm payment in PetShop",
-      text: `Customer ${userName} has already pay his/her order. Please admin in PetShop check the bank account to confirm that his/her order has already pay successfully. Order ID ${orderId}`,
+      // text: `Customer ${userName} has already pay his/her order. Please admin in PetShop check the bank account to confirm that his/her order has already pay successfully. Order ID ${orderId}`,
+      html: `<figure class="image" style="text-align: center;"><img src="https://res.cloudinary.com/dh5uzwer0/image/upload/v1683702966/kxi318dnci04rbqojacc.jpg"></figure><p>Hello administator of PetShop !</p><p>Customer's name <strong>${userName}</strong> has already pay his/her order successfully. Please check the bank account to confirm that customer <strong>${userName}</strong> with his/her ORDER ID <strong>${orderId}</strong> has already complete the order.</p><p>Thank for your checking this email.</p><p>Yours sincerely,</p>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
