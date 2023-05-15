@@ -6,8 +6,52 @@ const Role = db.role;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+var nodemailer = require("nodemailer");
+const USER_NAME_GMAIL = "petshopecommerce301@gmail.com";
+const APP_PASSWORD_HARD_CODE = "oelntfgcqbaypmrg";
+
 class AuthController {
   signup(req, res, next) {
+    const sendEmailActive = (code, userMail) => {
+      // console.log("code", code);
+      var transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true,
+        auth: {
+          user: USER_NAME_GMAIL,
+          pass: APP_PASSWORD_HARD_CODE,
+        },
+      });
+
+      var mailOptions = {
+        from: "petshopecommerce301@gmail.com",
+        to: userMail,
+        subject: "Code Active Account",
+        text: `Your code active account is ${code}`,
+      };
+
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log("error", error);
+          // res.send({
+          //   retCode: 0,
+          //   retText: "Send email unsuccessfully!",
+          //   retData: null,
+          // });
+          return;
+        } else {
+          // res.send({
+          //   retCode: 0,
+          //   retText: "Send email successfully!",
+          //   retData: null,
+          // });
+          // console.log("info", info);
+          return;
+        }
+      });
+    };
+
     User.findOne({
       username: req.body.username,
     }).exec((err, user) => {
@@ -19,13 +63,21 @@ class AuthController {
       if (user) {
         res
           .status(400)
-          .send({ message: "Failed! Username is already in use!" });
+          .send({ message: "Failed! Your email is already in use!" });
         return;
       } else {
+        const { username, password, fullName, phone, address, statusActive } =
+          req.body || {};
+        const codeActive = Math.floor(Math.random() * 900000) + 100000;
+
         const user = new User({
-          username: req.body.username,
-          email: req.body.email,
-          password: bcrypt.hashSync(req.body.password, 8),
+          username: username,
+          password: bcrypt.hashSync(password, 8),
+          fullName,
+          phone,
+          address,
+          codeActive,
+          statusActive, // 0 is not active, 1 is active
         });
 
         user.save((err, user) => {
@@ -52,7 +104,14 @@ class AuthController {
                     return;
                   }
 
-                  res.send({ message: "User was registered successfully!" });
+                  // Send email
+                  sendEmailActive(codeActive, username);
+
+                  res.send({
+                    retCode: 0,
+                    retText: "User was registered successfully!",
+                    retData: null,
+                  });
                 });
               }
             );
@@ -70,7 +129,14 @@ class AuthController {
                   return;
                 }
 
-                res.send({ message: "User was registered successfully!" });
+                // Send email
+                sendEmailActive(codeActive, username);
+
+                res.send({
+                  retCode: 0,
+                  retText: "User was registered successfully!",
+                  retData: null,
+                });
               });
             });
           }

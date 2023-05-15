@@ -9,6 +9,21 @@ const User = new Schema({
   password: {
     type: String,
   },
+  fullName: {
+    type: String,
+  },
+  phone: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  codeActive: {
+    type: Number,
+  },
+  statusActive: {
+    type: Number,
+  },
   roles: [
     {
       type: mongoose.Schema.Types.ObjectId,
