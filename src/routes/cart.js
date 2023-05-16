@@ -5,23 +5,15 @@ const { authJwt } = require("../app/middleware");
 const CartController = require("../app/controllers/CartController");
 
 // Create list item in cart
-router.post(
-  "/create-cart",
-  [authJwt.verifyToken, authJwt.isAdmin],
-  CartController.createCart
-);
+router.post("/create-cart", [authJwt.verifyToken], CartController.createCart);
 
 // Get item in cart
-router.post(
-  "/get-cart",
-  [authJwt.verifyToken, authJwt.isAdmin],
-  CartController.getCart
-);
+router.post("/get-cart", [authJwt.verifyToken], CartController.getCart);
 
 // Delete item in cart
 router.post(
   "/delete-item",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   CartController.deleteItemCart
 );
 

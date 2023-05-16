@@ -22,10 +22,6 @@ router.get(
   UserController.moderatorBoard
 );
 
-router.get(
-  "/admin",
-  [authJwt.verifyToken, authJwt.isAdmin],
-  UserController.adminBoard
-);
+router.get("/admin", [authJwt.verifyToken], UserController.adminBoard);
 
 module.exports = router;

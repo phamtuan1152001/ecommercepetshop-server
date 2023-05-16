@@ -6,35 +6,35 @@ const OrderController = require("../app/controllers/OrderController");
 // Create order
 router.post(
   "/create-order",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   OrderController.createOrder
 );
 
 // Get list order
 router.post(
   "/get-list-order",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   OrderController.getListOrder
 );
 
 // Get detail order
 router.get(
   "/get-detail-order/:id",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   OrderController.getDetailOrder
 );
 
 // Delete detail order
 router.delete(
   "/delete-detail-order/:id",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   OrderController.deleteDetailOrder
 );
 
 // Update detail order
 router.put(
   "/update-detail-order/:id",
-  [authJwt.verifyToken, authJwt.isAdmin],
+  [authJwt.verifyToken],
   OrderController.updateOrder
 );
 
