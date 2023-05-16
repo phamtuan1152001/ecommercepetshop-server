@@ -16,4 +16,6 @@ router.post("/signup", AuthController.signup);
 
 router.post("/signin", AuthController.signin);
 
+router.post("/confirmCode", AuthController.confirmActiveCode);
+
 module.exports = router;

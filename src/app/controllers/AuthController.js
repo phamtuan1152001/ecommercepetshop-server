@@ -6,6 +6,7 @@ const Role = db.role;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
+// set up send email
 var nodemailer = require("nodemailer");
 const USER_NAME_GMAIL = "petshopecommerce301@gmail.com";
 const APP_PASSWORD_HARD_CODE = "oelntfgcqbaypmrg";
@@ -158,41 +159,78 @@ class AuthController {
 
         if (!user) {
           return res.status(404).send({ message: "User Not found." });
+        } else {
+          if (user.statusActive === 0) {
+            res.json({
+              retCode: 1,
+              retText: "Account is not actived",
+              retData: null,
+            });
+          } else {
+            var passwordIsValid = bcrypt.compareSync(
+              req.body.password,
+              user.password
+            );
+
+            if (!passwordIsValid) {
+              return res.status(401).send({
+                accessToken: null,
+                message: "Invalid Password!",
+              });
+            }
+
+            var token = jwt.sign({ id: user.id }, config.secret, {
+              // expiresIn: 86400, // 24 hours // không càn set time expired cho token
+            });
+
+            var authorities = [];
+
+            for (let i = 0; i < user.roles.length; i++) {
+              authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
+            }
+            res.status(200).send({
+              retCode: 0,
+              retText: "Login successfully!",
+              retData: {
+                id: user._id,
+                username: user.username,
+                fullName: user.fullName,
+                phone: user.phone,
+                address: user.address,
+                statusActive: user.statusActive,
+                roles: authorities,
+                accessToken: token,
+              },
+            });
+          }
         }
-
-        var passwordIsValid = bcrypt.compareSync(
-          req.body.password,
-          user.password
-        );
-
-        if (!passwordIsValid) {
-          return res.status(401).send({
-            accessToken: null,
-            message: "Invalid Password!",
-          });
-        }
-
-        var token = jwt.sign({ id: user.id }, config.secret, {
-          // expiresIn: 86400, // 24 hours // không càn set time expired cho token
-        });
-
-        var authorities = [];
-
-        for (let i = 0; i < user.roles.length; i++) {
-          authorities.push("ROLE_" + user.roles[i].name.toUpperCase());
-        }
-        res.status(200).send({
-          retCode: 0,
-          retText: "Login successfully!",
-          retData: {
-            id: user._id,
-            username: user.username,
-            // email: user.email,
-            roles: authorities,
-            accessToken: token,
-          },
-        });
       });
+  }
+
+  confirmActiveCode(req, res, next) {
+    const { code, userId } = req.body || {};
+    User.findOne({ _id: userId }).exec(async (err, user) => {
+      if (err) {
+        res.status(500).send({ message: err });
+        return;
+      } else {
+        if (user) {
+          if (user.codeActive === code) {
+            user.set({ statusActive: 1 });
+            await user.save();
+            res.json({
+              retCode: 0,
+              retText: "Successfully active account",
+              retData: null,
+            });
+          } else {
+          }
+        } else {
+          res.status(400).send({ message: "User not found!" });
+          return;
+        }
+      }
+    });
   }
 }
 
