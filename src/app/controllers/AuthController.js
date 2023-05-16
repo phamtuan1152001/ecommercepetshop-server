@@ -111,7 +111,9 @@ class AuthController {
                   res.send({
                     retCode: 0,
                     retText: "User was registered successfully!",
-                    retData: null,
+                    retData: {
+                      userId: user._id,
+                    },
                   });
                 });
               }
@@ -136,7 +138,9 @@ class AuthController {
                 res.send({
                   retCode: 0,
                   retText: "User was registered successfully!",
-                  retData: null,
+                  retData: {
+                    userId: user._id,
+                  },
                 });
               });
             });
