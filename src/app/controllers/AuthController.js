@@ -211,30 +211,51 @@ class AuthController {
       });
   }
 
-  confirmActiveCode(req, res, next) {
+  async confirmActiveCode(req, res, next) {
     const { code, userId } = req.body || {};
-    User.findOne({ _id: userId }).exec(async (err, user) => {
-      if (err) {
-        res.status(500).send({ message: err });
-        return;
+
+    const userDetail = await User.findOne({ _id: userId }).exec();
+    if (!!userDetail) {
+      if (userDetail.codeActive === code) {
+        userDetail.set({ statusActive: 1 });
+        await userDetail.save();
+        res.json({
+          retCode: 0,
+          retText: "Successfully active account",
+          retData: null,
+        });
       } else {
-        if (user) {
-          if (user.codeActive === code) {
-            user.set({ statusActive: 1 });
-            await user.save();
-            res.json({
-              retCode: 0,
-              retText: "Successfully active account",
-              retData: null,
-            });
-          } else {
-          }
-        } else {
-          res.status(400).send({ message: "User not found!" });
-          return;
-        }
+        res.status(400).send({ message: "Code active is not correct!" });
+        return;
       }
-    });
+    } else {
+      res.status(400).send({ message: "User not found!" });
+      return;
+    }
+    // res.json(userDetail);
+
+    // User.findOne({ _id: userId }).exec(async (err, user) => {
+    //   if (err) {
+    //     res.status(500).send({ message: err });
+    //     return;
+    //   } else {
+    //     if (user) {
+    //       if (user.codeActive === code) {
+    //         user.set({ statusActive: 1 });
+    //         await user.save();
+    //         res.json({
+    //           retCode: 0,
+    //           retText: "Successfully active account",
+    //           retData: null,
+    //         });
+    //       } else {
+    //       }
+    //     } else {
+    //       res.status(400).send({ message: "User not found!" });
+    //       return;
+    //     }
+    //   }
+    // });
   }
 }
 
