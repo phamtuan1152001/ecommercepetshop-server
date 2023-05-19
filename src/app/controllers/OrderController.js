@@ -88,22 +88,40 @@ class OrderController {
       const userInfo = await User.findById(userId);
       const cartInfo = await Cart.findById(cartId);
 
-      const detailOrder = {
-        ...rest,
-        userId: userInfo,
-        cartId: cartInfo,
+      const listCartDetail = cartInfo._doc.listCart.map(async (item) => {
+        const { _id, totalPrice, totalItem } = item || {};
+        const data = await Product.findById(_id);
+        return {
+          totalPrice,
+          totalItem,
+          ...data,
+        };
+      });
+
+      const resolvedPromises = await Promise.all(listCartDetail);
+
+      const cartDetail = {
+        ...cartInfo._doc,
+        listCart: resolvedPromises.map((item) => {
+          const { totalItem, totalPrice, _doc } = item || {};
+          return {
+            ..._doc,
+            totalItem,
+            totalPrice,
+          };
+        }),
       };
 
-      const detailOrderResult = {
-        ...detailOrder._doc,
-        userId: detailOrder.userId,
-        cartId: detailOrder.cartId,
+      const detailOrder = {
+        ...rest._doc,
+        userId: userInfo,
+        cartId: cartDetail,
       };
 
       res.json({
         retCode: 0,
         retText: "Successfully",
-        retData: detailOrderResult,
+        retData: detailOrder,
       });
     } catch (error) {
       res.status(500).send(error);
