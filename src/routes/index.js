@@ -7,8 +7,14 @@ const sendEmailRouter = require("./sendemail");
 const voucherRouter = require("./vouchers");
 const cartRouter = require("./cart");
 const orderRouter = require("./order");
+const newsRouter = require("./news");
+
 // "start": "nodemon --inspect src/index.js",
+
 function route(app) {
+  // news
+  app.use("/news", newsRouter);
+
   // order
   app.use("/order", orderRouter);
 
