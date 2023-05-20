@@ -37,7 +37,7 @@ function route(app) {
   app.use("/auth", authRouter);
 
   // authorization - test
-  app.use("/test", userRouter);
+  app.use("/user", userRouter);
 
   // main
   app.use("/products", productsRouter);

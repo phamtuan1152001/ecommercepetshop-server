@@ -1,15 +1,20 @@
-exports.allAccess = (req, res) => {
-  res.status(200).send("Public Content.");
-};
+const User = require("../models/User");
 
-exports.userBoard = (req, res) => {
-  res.status(200).send("User Content.");
-};
+class UserController {
+  async updateInfoUser(req, res, next) {
+    try {
+      const userDetail = await User.findById(req.params.id).exec();
+      userDetail.set(req.body);
+      const result = await userDetail.save();
+      res.json({
+        retCode: 0,
+        retText: "Successfully Update",
+        retData: result,
+      });
+    } catch (error) {
+      res.status(500).send(error);
+    }
+  }
+}
 
-exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
-};
-
-exports.moderatorBoard = (req, res) => {
-  res.status(200).send("Moderator Content.");
-};
+module.exports = new UserController();
