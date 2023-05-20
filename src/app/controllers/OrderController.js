@@ -157,6 +157,66 @@ class OrderController {
       res.status(500).send(error);
     }
   }
+
+  async getListOrderClient(req, res, next) {
+    const getPagination = (page, size) => {
+      const limit = size ? +size : 0;
+      const offset = page === 1 ? 0 : (page - 1) * limit;
+
+      return { limit, offset };
+    };
+    const { page, size, productText, userId } = req.body;
+
+    const filter = {};
+
+    if (productText) {
+      filter.name = { $regex: new RegExp(productText), $options: "i" };
+    }
+
+    if (userId) {
+      Object.assign(filter, { userId });
+    }
+
+    const { limit, offset } = getPagination(page, size);
+
+    Order.paginate(filter, { offset, limit })
+      .then(async (data) => {
+        const { totalDocs, docs, totalPages, page } = data || {};
+        const listOrder = docs.map(async (item) => {
+          const dataUser = await User.findById(item.userId);
+          const dataCart = await Cart.findById(item.cartId);
+          return {
+            ...item,
+            userId: dataUser,
+            cartId: dataCart,
+          };
+        });
+        const resolvedPromises = await Promise.all(listOrder);
+        const resultData = resolvedPromises.map((item) => {
+          const { _doc, userId, cartId } = item || {};
+          return {
+            ..._doc,
+            userId,
+            cartId,
+          };
+        });
+        res.json({
+          retCode: 0,
+          retText: "List order",
+          retData: {
+            totalItems: totalDocs,
+            orders: resultData,
+            totalPages: totalPages,
+            currentPage: page - 1,
+          },
+        });
+      })
+      .catch((err) => {
+        res.status(500).send({
+          message: err.message,
+        });
+      });
+  }
 }
 
 module.exports = new OrderController();

@@ -3,6 +3,13 @@ const router = express.Router();
 const { authJwt } = require("../app/middleware");
 const OrderController = require("../app/controllers/OrderController");
 
+// Get list order client
+router.post(
+  "/get-list-order-client",
+  [authJwt.verifyToken],
+  OrderController.getListOrderClient
+);
+
 // Create order
 router.post(
   "/create-order",
