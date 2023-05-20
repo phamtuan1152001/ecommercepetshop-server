@@ -3,33 +3,29 @@ const router = express.Router();
 const { authJwt } = require("../app/middleware");
 const NewsController = require("../app/controllers/NewsController");
 
-// Create order
+// Create new
 router.post("/create-news", [authJwt.verifyToken], NewsController.createNews);
 
-// Get list order
-router.post(
-  "/get-list-order",
-  [authJwt.verifyToken],
-  NewsController.getListNews
-);
+// Get list new
+router.post("/get-list-new", [authJwt.verifyToken], NewsController.getListNews);
 
-// Get detail order
+// Get detail new
 router.get(
-  "/get-detail-order/:id",
+  "/get-detail-new/:id",
   [authJwt.verifyToken],
   NewsController.getDetailNews
 );
 
-// Delete detail order
+// Delete detail new
 router.delete(
-  "/delete-detail-order/:id",
+  "/delete-detail-new/:id",
   [authJwt.verifyToken],
   NewsController.deleteDetailNews
 );
 
-// Update detail order
+// Update detail new
 router.put(
-  "/update-detail-order/:id",
+  "/update-detail-new/:id",
   [authJwt.verifyToken],
   NewsController.updateDetailNews
 );
