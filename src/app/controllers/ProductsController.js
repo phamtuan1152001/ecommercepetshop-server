@@ -47,7 +47,7 @@ class ProductsController {
       Object.assign(filter, { weight });
     }
 
-    if (maxPrice && minPrice) {
+    if (maxPrice || minPrice) {
       Object.assign(filter, { price: { $gte: minPrice, $lte: maxPrice } });
     }
 
