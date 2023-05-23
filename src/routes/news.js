@@ -7,13 +7,16 @@ const NewsController = require("../app/controllers/NewsController");
 router.post("/create-news", [authJwt.verifyToken], NewsController.createNews);
 
 // Get list new
-router.post("/get-list-new", [authJwt.verifyToken], NewsController.getListNews);
+router.post(
+  "/get-list-new" /* , [authJwt.verifyToken] */,
+  NewsController.getListNews
+);
 
 // Get detail new
 router.get(
   "/get-detail-new/:id",
-  [authJwt.verifyToken],
-  NewsController.getDetailNews
+  /*   [authJwt.verifyToken],
+   */ NewsController.getDetailNews
 );
 
 // Delete detail new

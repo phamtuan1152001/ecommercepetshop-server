@@ -12,12 +12,15 @@ router.post("/create", [authJwt.verifyToken], ProductsController.create);
 // post list producst with pagination
 router.post(
   "/listProducts",
-  [authJwt.verifyToken],
-  ProductsController.getListWithPaginate
+  /*   [authJwt.verifyToken],
+   */ ProductsController.getListWithPaginate
 );
 
 // get detail products
-router.get("/detail/:id", [authJwt.verifyToken], ProductsController.getDetail);
+router.get(
+  "/detail/:id" /* , [authJwt.verifyToken] */,
+  ProductsController.getDetail
+);
 
 // update products
 router.put("/update/:id", [authJwt.verifyToken], ProductsController.update);
