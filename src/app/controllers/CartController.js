@@ -269,6 +269,28 @@ class CartController {
       res.status(500).send(err);
     }
   }
+
+  async checkCartExist(req, res, next) {
+    const { userId } = req.body;
+    try {
+      const data = await Cart.findOne({ userId });
+      if (!!data) {
+        res.json({
+          retCode: 0,
+          retText: "Users have already cart exist",
+          retData: true,
+        });
+      } else {
+        res.json({
+          retCode: 1,
+          retText: "Users have not already cart exist",
+          retData: false,
+        });
+      }
+    } catch (err) {
+      res.status(500).send(err);
+    }
+  }
 }
 
 module.exports = new CartController();

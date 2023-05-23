@@ -17,4 +17,11 @@ router.post(
   CartController.deleteItemCart
 );
 
+// Check cart exist
+router.post(
+  "/check-cart-exist",
+  [authJwt.verifyToken],
+  CartController.checkCartExist
+);
+
 module.exports = router;
