@@ -8,6 +8,9 @@ const New = new Schema(
     title: {
       type: String,
     },
+    linkImage: {
+      type: String,
+    },
     description: {
       type: String,
     },
